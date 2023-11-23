@@ -1,0 +1,75 @@
+[gd_scene load_steps=10 format=3 uid="uid://8l8d51mpprhm"]
+
+[ext_resource type="Script" path="res://scr/scenes/game_object/player/player.gd" id="1_mhcfk"]
+[ext_resource type="Texture2D" uid="uid://g3ghjehurm1q" path="res://scr/scenes/game_object/player/player.png" id="1_suuob"]
+[ext_resource type="PackedScene" uid="uid://ccexkkgap0jig" path="res://scr/scenes/ability/sword_controller/sword_ability_controller.tscn" id="2_g8t1w"]
+[ext_resource type="PackedScene" uid="uid://dlsqinwaedq0o" path="res://scr/scenes/component/health_component.tscn" id="2_lkuc1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bjs37"]
+bg_color = Color(0.246094, 0.148438, 0.191406, 1)
+border_color = Color(0.246094, 0.148438, 0.191406, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_48wvf"]
+bg_color = Color(0.144531, 0.582031, 0.414063, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0ikw3"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_m2y6g"]
+radius = 6.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_y4ety"]
+radius = 5.0
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+collision_layer = 0
+motion_mode = 1
+script = ExtResource("1_mhcfk")
+
+[node name="HealthComponent" parent="." instance=ExtResource("2_lkuc1")]
+
+[node name="Abilities" type="Node" parent="."]
+
+[node name="SwordAbilityController" parent="Abilities" instance=ExtResource("2_g8t1w")]
+
+[node name="DamageIntervalTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+custom_minimum_size = Vector2(32, 5)
+offset_left = -16.0
+offset_top = -23.0
+offset_right = 16.0
+offset_bottom = -18.0
+pivot_offset = Vector2(16, 2.5)
+theme_override_styles/background = SubResource("StyleBoxFlat_bjs37")
+theme_override_styles/fill = SubResource("StyleBoxFlat_48wvf")
+max_value = 1.0
+value = 0.5
+show_percentage = false
+
+[node name="PickupArea2D" type="Area2D" parent="."]
+visible = false
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupArea2D"]
+position = Vector2(0, -8)
+shape = SubResource("CircleShape2D_0ikw3")
+
+[node name="CollisionArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea2D"]
+position = Vector2(0, -8)
+shape = SubResource("CircleShape2D_m2y6g")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -8)
+texture = ExtResource("1_suuob")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
+shape = SubResource("CircleShape2D_y4ety")
